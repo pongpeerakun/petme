@@ -6,6 +6,7 @@
     "dev": "supabase start && supabase functions serve",
     "deploy": "supabase functions deploy",
     "secrets": "supabase secrets set --env-file ./supabase/.env",
+    "auth:migrate": "npx @better-auth/cli@latest generate && npx drizzle-kit generate && npx drizzle-kit migrate",
     "auth:generate": "npx @better-auth/cli@latest generate",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "npx drizzle-kit migrate"
