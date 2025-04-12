@@ -1,0 +1,24 @@
+{
+  "name": "petme",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "dev": "supabase start && supabase functions serve",
+    "deploy": "supabase functions deploy",
+    "secrets": "supabase secrets set --env-file ./supabase/.env",
+    "auth:generate": "npx @better-auth/cli@latest generate",
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-auth": "^1.2.5",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.41.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.6"
+  }
+}
