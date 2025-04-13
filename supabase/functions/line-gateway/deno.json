@@ -1,3 +1,12 @@
 {
-  "imports": {}
+  "imports": {
+    "better-auth": "npm:better-auth",
+    "better-auth/plugins": "npm:better-auth/plugins",
+    "postgres": "npm:postgres",
+    "drizzle-orm": "npm:drizzle-orm",
+    "drizzle-orm/postgres-js": "npm:drizzle-orm/postgres-js",
+    "better-auth/adapters/drizzle": "npm:better-auth/adapters/drizzle",
+    "drizzle-orm/pg-core": "npm:drizzle-orm/pg-core",
+    "drizzle-kit": "npm:drizzle-kit"
+  }
 }

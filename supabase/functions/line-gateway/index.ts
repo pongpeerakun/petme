@@ -4,10 +4,22 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+import { auth } from "./auth.ts"
 
 Deno.serve(async (req) => {
   const { events } = await req.json()
   console.log("ENV", Deno.env.get("ENV"))
+  console.log("SUPABASE_DB_URL", Deno.env.get("DATABASE_URL"))
+
+  const user = await auth.api.createUser({
+    body: {
+      email: "test@test.com",
+      name: "test",
+      password: "test",
+      username: "test",
+    },
+  })
+  console.log("USER", user)
   return new Response(
     JSON.stringify(events),
     { headers: { "Content-Type": "application/json" } },
