@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
+    "env:dev": "cp .env.dev .env",
+    "env:prd": "cp .env.prd .env",
     "dev": "supabase start && supabase functions serve",
     "deploy": "supabase functions deploy",
     "secrets": "supabase secrets set --env-file ./supabase/.env",
-    "auth:migrate": "npx @better-auth/cli@latest generate && npx drizzle-kit generate && npx drizzle-kit migrate",
-    "auth:generate": "npx @better-auth/cli@latest generate",
+    "auth:migrate": "npx @better-auth/cli@1.2.5 generate && npx drizzle-kit generate && npx drizzle-kit migrate",
+    "auth:generate": "npx @better-auth/cli@1.2.5 generate",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "npx drizzle-kit migrate"
   },
