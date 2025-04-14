@@ -1,3 +1,5 @@
 **/.env
 .temp
 node_modules
+.env.dev
+.env.prd
