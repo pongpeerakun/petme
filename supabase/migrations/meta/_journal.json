@@ -8,6 +8,20 @@
       "when": 1744857611051,
       "tag": "0000_mighty_zodiak",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1744864775857,
+      "tag": "0001_yielding_nocturne",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744869696722,
+      "tag": "0002_legal_captain_cross",
+      "breakpoints": true
     }
   ]
 }
