@@ -1,6 +1,7 @@
-import { pgTable, text, integer, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { assistricSchema } from "./drizzle/schema.ts";	
 			
-export const user = pgTable("user", {
+export const user = assistricSchema.table("user", {
 					id: text("id").primaryKey(),
 					name: text('name').notNull(),
  email: text('email').notNull().unique(),
@@ -14,7 +15,7 @@ export const user = pgTable("user", {
  banExpires: timestamp('ban_expires'),
  username: text('username').unique(),
  displayUsername: text('display_username')
-				});
+				}).enableRLS();
 
 export const session = pgTable("session", {
 					id: text("id").primaryKey(),
@@ -26,9 +27,9 @@ export const session = pgTable("session", {
  userAgent: text('user_agent'),
  userId: text('user_id').notNull().references(()=> user.id, { onDelete: 'cascade' }),
  impersonatedBy: text('impersonated_by')
-				});
+				}).enableRLS();
 
-export const account = pgTable("account", {
+export const account = assistricSchema.table("account", {
 					id: text("id").primaryKey(),
 					accountId: text('account_id').notNull(),
  providerId: text('provider_id').notNull(),
@@ -42,13 +43,13 @@ export const account = pgTable("account", {
  password: text('password'),
  createdAt: timestamp('created_at').notNull(),
  updatedAt: timestamp('updated_at').notNull()
-				});
+				}).enableRLS();
 
-export const verification = pgTable("verification", {
+export const verification = assistricSchema.table("verification", {
 					id: text("id").primaryKey(),
 					identifier: text('identifier').notNull(),
  value: text('value').notNull(),
  expiresAt: timestamp('expires_at').notNull(),
  createdAt: timestamp('created_at'),
  updatedAt: timestamp('updated_at')
-				});
+				}).enableRLS();
