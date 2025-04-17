@@ -6,8 +6,9 @@ config({ path: ".env" })
 export default defineConfig({
     schema: [
         "./drizzle/schema.ts",
+        "./auth-schema.ts",
         "./drizzle/table.ts", 
-        "./auth-schema.ts"],
+    ],
     out: "./supabase/migrations",
     dialect: "postgresql",
     dbCredentials: {

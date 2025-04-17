@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { assistricSchema } from "./drizzle/schema.ts";	
 			
 export const user = assistricSchema.table("user", {
@@ -17,7 +17,7 @@ export const user = assistricSchema.table("user", {
  displayUsername: text('display_username')
 				}).enableRLS();
 
-export const session = pgTable("session", {
+export const session = assistricSchema.table("session", {
 					id: text("id").primaryKey(),
 					expiresAt: timestamp('expires_at').notNull(),
  token: text('token').notNull().unique(),

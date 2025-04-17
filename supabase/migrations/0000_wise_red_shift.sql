@@ -17,7 +17,7 @@ CREATE TABLE "assistric"."account" (
 );
 --> statement-breakpoint
 ALTER TABLE "assistric"."account" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
-CREATE TABLE "session" (
+CREATE TABLE "assistric"."session" (
 	"id" text PRIMARY KEY NOT NULL,
 	"expires_at" timestamp NOT NULL,
 	"token" text NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE "session" (
 	CONSTRAINT "session_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
-ALTER TABLE "session" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "assistric"."session" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "assistric"."user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -61,4 +61,4 @@ CREATE TABLE "assistric"."verification" (
 --> statement-breakpoint
 ALTER TABLE "assistric"."verification" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 ALTER TABLE "assistric"."account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "assistric"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "assistric"."user"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "assistric"."session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "assistric"."user"("id") ON DELETE cascade ON UPDATE no action;

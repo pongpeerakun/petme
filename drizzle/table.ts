@@ -1,4 +1,4 @@
-import { pgSchema, text, bigint, timestamp, boolean, integer, jsonb, serial, primaryKey, index } from "drizzle-orm/pg-core";
+import { pgSchema, text, bigint, timestamp, boolean, integer, jsonb, serial, primaryKey, index, doublePrecision, uuid } from "drizzle-orm/pg-core";
 import { relations } from 'drizzle-orm';
 
 // Define the "line_me" schema
@@ -6,12 +6,13 @@ export const lineMeSchema = pgSchema("line_me");
 
 // Events table
 export const events = lineMeSchema.table('events', {
-    id: text('id').primaryKey(), // WebhookEventId
-    type: text('type').notNull(),
-    replyToken: text('reply_token').notNull(),
+    id: uuid('id').primaryKey().defaultRandom(),
+    webhookEventId: text('webhook_event_id').notNull(),
+    type: text('type'),
+    replyToken: text('reply_token'),
     timestamp: bigint('timestamp', { mode: 'number' }).notNull(), // Unix timestamp
     sourceType: text('source_type').notNull(), // 'user', 'group', 'room'
-    sourceId: text('source_id').notNull(), // userId, groupId, roomId
+    sourceId: text('source_id'), // userId, groupId, roomId
     userId: text('user_id'),
     mode: text('mode').notNull(), // 'active', 'standby'
     isRedelivery: boolean('is_redelivery').notNull(),
@@ -31,7 +32,7 @@ export const events = lineMeSchema.table('events', {
 // Messages table
 export const messages = lineMeSchema.table('messages', {
     id: text('id').primaryKey(),
-    eventId: text('event_id').notNull().references(() => events.id),
+    eventId: uuid('event_id').notNull().references(() => events.id),
     type: text('type').notNull(), // 'text', 'image', 'video', etc.
     quoteToken: text('quote_token'),
     content: jsonb('content').notNull(), // Full message content
@@ -111,6 +112,14 @@ export const fileMessages = lineMeSchema.table('file_messages', {
     fileSize: integer('file_size').notNull(), // Bytes
 }).enableRLS();
 
+export const locationMessages = lineMeSchema.table('location_messages', {
+    messageId: text('message_id').primaryKey().references(() => messages.id),
+    title: text('title'),
+    address: text('address'),
+    latitude: doublePrecision('latitude'),
+    longitude: doublePrecision('longitude'),
+}).enableRLS();
+
 // Sticker Messages table
 export const stickerMessages = lineMeSchema.table('sticker_messages', {
     messageId: text('message_id').primaryKey().references(() => messages.id),
@@ -162,8 +171,7 @@ export const groupMembers = lineMeSchema.table('group_members', {
 // interaction_events table
 export const interactionEvents = lineMeSchema.table('interaction_events', {
     id: text('id').primaryKey(),
-    eventId: text('event_id').notNull().references(() => events.id),
-    quoteToken: text('quote_token'),
+    eventId: uuid('event_id').notNull().references(() => events.id),
     content: jsonb('content').notNull(), // Full message content
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 },
@@ -196,6 +204,14 @@ export const messagesRelations = relations(messages, ({ one }) => ({
 	}),
     // Add relations to specialized message types if needed for specific queries
     // e.g., textMessage: one(textMessages, { fields: [messages.id], references: [textMessages.messageId] })
+}));
+
+// Interaction Events relations
+export const interactionEventsRelations = relations(interactionEvents, ({ one }) => ({
+	event: one(events, {
+		fields: [interactionEvents.eventId],
+		references: [events.id],
+	}),
 }));
 
 // Text Messages relations

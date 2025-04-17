@@ -1,5 +1,5 @@
 {
-  "id": "89042f37-fbce-4fc4-adb8-7c82a919fb4a",
+  "id": "3cb36743-ba58-474c-80ec-aae350168236",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -110,9 +110,9 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "public.session": {
+    "assistric.session": {
       "name": "session",
-      "schema": "",
+      "schema": "assistric",
       "columns": {
         "id": {
           "name": "id",
