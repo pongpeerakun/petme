@@ -15,6 +15,13 @@
       "when": 1744882372060,
       "tag": "0001_parallel_red_wolf",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744885242343,
+      "tag": "0002_mushy_mister_fear",
+      "breakpoints": true
     }
   ]
 }

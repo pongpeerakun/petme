@@ -286,3 +286,10 @@ export const groupMembersRelations = relations(groupMembers, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const errorEvents = lineMeSchema.table('error_events', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    content: jsonb('content').notNull(),
+    error: text('error').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}).enableRLS();

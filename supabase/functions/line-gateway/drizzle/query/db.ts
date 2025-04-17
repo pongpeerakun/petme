@@ -15,6 +15,7 @@ import {
     fileMessages,
     stickerKeywords,
     interactionEvents,
+    errorEvents,
 } from "../table.ts"
 import { Payload, Event, Message, TextMessage, ImageMessage, VideoMessage, AudioMessage, FileMessage, LocationMessage, StickerMessage, ContentProvider } from "./type.ts"
 
@@ -76,6 +77,10 @@ export class DbClient {
                 }
             } catch (error) {
                 console.error(error)
+                await tx.insert(errorEvents).values({
+                    content: payload,
+                    error: error instanceof Error ? error.message : String(error),
+                })
                 tx.rollback()
             }
         })
