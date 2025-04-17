@@ -7,7 +7,9 @@ export default defineConfig({
     schema: [
         "./drizzle/schema.ts",
         "./auth-schema.ts",
-        "./drizzle/table.ts", 
+        "./drizzle/line_me_table.ts", 
+        "./drizzle/assistric_table.ts",
+        "./drizzle/object_storage_table.ts",
     ],
     out: "./supabase/migrations",
     dialect: "postgresql",

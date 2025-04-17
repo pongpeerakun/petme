@@ -1,4 +1,8 @@
-import { pgSchema, text, bigint, timestamp, boolean, integer, jsonb, serial, primaryKey, index, doublePrecision, uuid } from "drizzle-orm/pg-core";
+import { 
+    pgSchema, text, bigint, timestamp, 
+    boolean, integer, jsonb, serial, primaryKey, 
+    index, doublePrecision, uuid
+} from "drizzle-orm/pg-core";
 import { relations } from 'drizzle-orm';
 
 // Define the "line_me" schema
@@ -27,7 +31,7 @@ export const events = lineMeSchema.table('events', {
     // index userId
     idxUserId: index('idx_events_user_id').on(table.userId),
 })
-).enableRLS();
+).enableRLS()
 
 // Messages table
 export const messages = lineMeSchema.table('messages', {
@@ -46,7 +50,7 @@ export const messages = lineMeSchema.table('messages', {
     // index type
     idxType: index('idx_messages_type').on(table.type),
 })
-).enableRLS();
+).enableRLS()
 
 // Text Messages table
 export const textMessages = lineMeSchema.table('text_messages', {
@@ -54,7 +58,7 @@ export const textMessages = lineMeSchema.table('text_messages', {
     text: text('text').notNull(),
     hasEmojis: boolean('has_emojis').notNull().default(false),
     hasMentions: boolean('has_mentions').notNull().default(false),
-}).enableRLS();
+}).enableRLS()
 
 // Emojis table
 export const emojis = lineMeSchema.table('emojis', {
@@ -64,7 +68,7 @@ export const emojis = lineMeSchema.table('emojis', {
     length: integer('length').notNull(),
     productId: text('product_id').notNull(),
     emojiId: text('emoji_id').notNull(),
-}).enableRLS();
+}).enableRLS()
 
 // Mentions table
 export const mentions = lineMeSchema.table('mentions', {
@@ -75,7 +79,7 @@ export const mentions = lineMeSchema.table('mentions', {
     type: text('type').notNull(), // 'user', 'all'
     userId: text('user_id'), // Nullable if type is 'all'
     isSelf: boolean('is_self'),
-}).enableRLS();
+}).enableRLS()
 
 // Image Messages table
 export const imageMessages = lineMeSchema.table('image_messages', {
@@ -86,7 +90,7 @@ export const imageMessages = lineMeSchema.table('image_messages', {
     imageSetId: text('image_set_id'),
     imageSetIndex: integer('image_set_index'),
     imageSetTotal: integer('image_set_total'),
-}).enableRLS();
+}).enableRLS()
 
 // Video Messages table
 export const videoMessages = lineMeSchema.table('video_messages', {
@@ -95,7 +99,7 @@ export const videoMessages = lineMeSchema.table('video_messages', {
     contentProviderType: text('content_provider_type').notNull(),
     originalContentUrl: text('original_content_url'),
     previewImageUrl: text('preview_image_url'),
-}).enableRLS();
+}).enableRLS()
 
 // Audio Messages table
 export const audioMessages = lineMeSchema.table('audio_messages', {
@@ -103,14 +107,14 @@ export const audioMessages = lineMeSchema.table('audio_messages', {
     duration: integer('duration').notNull(), // Milliseconds
     contentProviderType: text('content_provider_type').notNull(),
     originalContentUrl: text('original_content_url'),
-}).enableRLS();
+}).enableRLS()
 
 // File Messages table
 export const fileMessages = lineMeSchema.table('file_messages', {
     messageId: text('message_id').primaryKey().references(() => messages.id),
     fileName: text('file_name').notNull(),
     fileSize: integer('file_size').notNull(), // Bytes
-}).enableRLS();
+}).enableRLS()
 
 export const locationMessages = lineMeSchema.table('location_messages', {
     messageId: text('message_id').primaryKey().references(() => messages.id),
@@ -118,7 +122,7 @@ export const locationMessages = lineMeSchema.table('location_messages', {
     address: text('address'),
     latitude: doublePrecision('latitude'),
     longitude: doublePrecision('longitude'),
-}).enableRLS();
+}).enableRLS()
 
 // Sticker Messages table
 export const stickerMessages = lineMeSchema.table('sticker_messages', {
@@ -127,14 +131,14 @@ export const stickerMessages = lineMeSchema.table('sticker_messages', {
     stickerId: text('sticker_id').notNull(),
     stickerResourceType: text('sticker_resource_type').notNull(), // 'MESSAGE', 'ANIMATION', etc.
     text: text('text'), // Optional text with sticker
-}).enableRLS();
+}).enableRLS()
 
 // Sticker Keywords table
 export const stickerKeywords = lineMeSchema.table('sticker_keywords', {
     id: serial('id').primaryKey(),
     messageId: text('message_id').notNull().references(() => stickerMessages.messageId),
     keyword: text('keyword').notNull(),
-}).enableRLS();
+}).enableRLS()
 
 // Users table
 export const users = lineMeSchema.table('users', {
@@ -144,7 +148,7 @@ export const users = lineMeSchema.table('users', {
     firstSeen: timestamp('first_seen', { withTimezone: true }).notNull().defaultNow(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(), // Consider using .$onUpdate(() => new Date())
-}).enableRLS();
+}).enableRLS()
 
 // Groups table
 export const groups = lineMeSchema.table('groups', {
@@ -155,7 +159,7 @@ export const groups = lineMeSchema.table('groups', {
     firstSeen: timestamp('first_seen', { withTimezone: true }).notNull().defaultNow(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(), // Consider using .$onUpdate(() => new Date())
-}).enableRLS();
+}).enableRLS()
 
 // Group Members table (Junction table)
 export const groupMembers = lineMeSchema.table('group_members', {
@@ -166,7 +170,7 @@ export const groupMembers = lineMeSchema.table('group_members', {
     firstSeen: timestamp('first_seen', { withTimezone: true }).notNull().defaultNow(),
 }, (table) => ({
     pk: primaryKey({ columns: [table.groupId, table.userId] }),
-})).enableRLS();
+})).enableRLS()
 
 // interaction_events table
 export const interactionEvents = lineMeSchema.table('interaction_events', {
@@ -181,7 +185,7 @@ export const interactionEvents = lineMeSchema.table('interaction_events', {
     // index createdAt
     idxCreatedAt: index('idx_interaction_events_created_at').on(table.createdAt),
 })
-).enableRLS();
+).enableRLS()
 
 // --- RELATIONS ---
 // Define relations for easier querying (optional but recommended)
@@ -194,17 +198,17 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
         references: [users.id]
     }),
     // Potential relations to groups or users based on sourceType/sourceId if needed
-}));
+}))
 
 // Messages relations
 export const messagesRelations = relations(messages, ({ one }) => ({
 	event: one(events, {
 		fields: [messages.eventId],
 		references: [events.id],
-	}),
+	})
     // Add relations to specialized message types if needed for specific queries
     // e.g., textMessage: one(textMessages, { fields: [messages.id], references: [textMessages.messageId] })
-}));
+}))
 
 // Interaction Events relations
 export const interactionEventsRelations = relations(interactionEvents, ({ one }) => ({
@@ -212,7 +216,7 @@ export const interactionEventsRelations = relations(interactionEvents, ({ one })
 		fields: [interactionEvents.eventId],
 		references: [events.id],
 	}),
-}));
+}))
 
 // Text Messages relations
 export const textMessagesRelations = relations(textMessages, ({ one, many }) => ({
@@ -222,15 +226,15 @@ export const textMessagesRelations = relations(textMessages, ({ one, many }) => 
 	}),
 	emojis: many(emojis),
 	mentions: many(mentions),
-}));
+}))
 
 // Emojis relations
 export const emojisRelations = relations(emojis, ({ one }) => ({
 	textMessage: one(textMessages, {
 		fields: [emojis.messageId],
 		references: [textMessages.messageId],
-	}),
-}));
+	})
+}))
 
 // Mentions relations
 export const mentionsRelations = relations(mentions, ({ one }) => ({
@@ -242,7 +246,7 @@ export const mentionsRelations = relations(mentions, ({ one }) => ({
         fields: [mentions.userId],
         references: [users.id]
     })
-}));
+}))
 
 // Sticker Messages relations
 export const stickerMessagesRelations = relations(stickerMessages, ({ one, many }) => ({
@@ -251,15 +255,15 @@ export const stickerMessagesRelations = relations(stickerMessages, ({ one, many 
 		references: [messages.id],
 	}),
     keywords: many(stickerKeywords)
-}));
+}))
 
 // Sticker Keywords relations
 export const stickerKeywordsRelations = relations(stickerKeywords, ({ one }) => ({
 	stickerMessage: one(stickerMessages, {
 		fields: [stickerKeywords.messageId],
 		references: [stickerMessages.messageId],
-	}),
-}));
+	})
+}))
 
 
 // Users relations
@@ -267,13 +271,13 @@ export const usersRelations = relations(users, ({ many }) => ({
 	groupMemberships: many(groupMembers),
     // Potentially add relations for messages sent by user, etc. if needed
     // events: many(events), // If tracking events initiated by user
-}));
+}))
 
 // Groups relations
 export const groupsRelations = relations(groups, ({ many }) => ({
 	members: many(groupMembers),
     // Potentially add relations for messages within the group if needed
-}));
+}))
 
 // Group Members relations (Junction table relations)
 export const groupMembersRelations = relations(groupMembers, ({ one }) => ({
@@ -285,11 +289,11 @@ export const groupMembersRelations = relations(groupMembers, ({ one }) => ({
 		fields: [groupMembers.userId],
 		references: [users.id],
 	}),
-}));
+}))
 
 export const errorEvents = lineMeSchema.table('error_events', {
     id: uuid('id').primaryKey().defaultRandom(),
     content: jsonb('content').notNull(),
     error: text('error').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-}).enableRLS();
+}).enableRLS()
