@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import { drizzle } from "drizzle-orm/postgres-js"
-import postgres from "postgres"
+import { DbClient } from "./drizzle/query/db.ts"
+import { Payload } from "./drizzle/query/type.ts"
 
 
 const corsHeaders = {
@@ -10,13 +10,13 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   try {
-    const { destination, events } = await req.json()
     const envName = Deno.env.get("ENV") === "production" ? "DATABASE_URL" : "SUPABASE_DB_URL"
     const connectionString = Deno.env.get(envName)!
-    const client = postgres(connectionString, { prepare: false });
-    const db = drizzle({ client })
 
-
+    const db = new DbClient(connectionString)
+    const reqBody = await req.json()
+    const event = Payload.parse(reqBody)
+    await db.saveLineEvents(event)
     return new Response(
       JSON.stringify({}),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },

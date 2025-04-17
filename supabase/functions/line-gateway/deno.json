@@ -3,6 +3,7 @@
     "drizzle-orm": "npm:drizzle-orm@^0.41.0",
     "drizzle-orm/pg-core": "npm:drizzle-orm@^0.41.0/pg-core",
     "drizzle-orm/postgres-js": "npm:drizzle-orm@^0.41.0/postgres-js",
-    "postgres": "npm:postgres@^3.4.5"
+    "postgres": "npm:postgres@^3.4.5",
+    "zod": "npm:zod@^3.24.3"
   }
 }
