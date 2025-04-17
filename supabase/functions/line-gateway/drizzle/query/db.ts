@@ -47,8 +47,10 @@ export class DbClient {
                         if (msgType === "text") {
                             const { text, emojiList, mentionList } = this.transformTextMessage(event.message)
                             await tx.insert(textMessages).values(text)
-                            await tx.insert(emojis).values(emojiList)
-                            await tx.insert(mentions).values(mentionList)
+                            if (emojiList.length > 0)
+                                await tx.insert(emojis).values(emojiList)
+                            if (mentionList.length > 0)
+                                await tx.insert(mentions).values(mentionList)
                         } else if (msgType === "image") {
                             const image = this.transformImageMessage(event.message)
                             await tx.insert(imageMessages).values(image)
@@ -67,7 +69,8 @@ export class DbClient {
                         } else if (msgType === "sticker") {
                             const { sticker, keywords } = this.transformStickerMessage(event.message)
                             await tx.insert(stickerMessages).values(sticker)
-                            await tx.insert(stickerKeywords).values(keywords)
+                            if (keywords.length > 0)
+                                await tx.insert(stickerKeywords).values(keywords)
                         }
                     }
                 }
@@ -109,7 +112,7 @@ export class DbClient {
         return {
             id: event.webhookEventId,
             eventId: actualEventId,
-            content: JSON.stringify(event),
+            content: event,
         } as IncommingNonMessageEvent
     }
 
@@ -155,7 +158,7 @@ export class DbClient {
             id: message.id,
             eventId: actualEventId,
             type: message.type,
-            content: JSON.stringify(message),
+            content: message,
             quoteToken: 'quoteToken' in message ? message.quoteToken : undefined,
         } as IncommingMessage
     }
