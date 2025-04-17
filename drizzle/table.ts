@@ -159,6 +159,22 @@ export const groupMembers = lineMeSchema.table('group_members', {
     pk: primaryKey({ columns: [table.groupId, table.userId] }),
 })).enableRLS();
 
+// interaction_events table
+export const interactionEvents = lineMeSchema.table('interaction_events', {
+    id: text('id').primaryKey(),
+    eventId: text('event_id').notNull().references(() => events.id),
+    quoteToken: text('quote_token'),
+    content: jsonb('content').notNull(), // Full message content
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+},
+(table) => ({
+    // index eventId
+    idxEventId: index('idx_interaction_events_event_id').on(table.eventId),
+    // index createdAt
+    idxCreatedAt: index('idx_interaction_events_created_at').on(table.createdAt),
+})
+).enableRLS();
+
 // --- RELATIONS ---
 // Define relations for easier querying (optional but recommended)
 
